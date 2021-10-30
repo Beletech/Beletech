@@ -1,0 +1,11 @@
+#服务器端口
+server:
+  port: 8102
+
+#数据源配置
+spring:
+  datasource:
+    url: ${beletech.datasource.prod.url}
+    username: ${beletech.datasource.prod.username}
+    password: ${beletech.datasource.prod.password}
+

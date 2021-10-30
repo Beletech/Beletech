@@ -1,0 +1,9 @@
+${AnsiColor.BLUE}                   ######
+${AnsiColor.BLUE}                   #     # ###### #      ###### ##### ######  ####  #    #
+${AnsiColor.BLUE}                   #     # #      #      #        #   #      #    # #    #
+${AnsiColor.BLUE}                   ######  #####  #      #####    #   #####  #      ######
+${AnsiColor.BLUE}                   #     # #      #      #        #   #      #      #    #
+${AnsiColor.BLUE}                   #     # #      #      #        #   #      #    # #    #
+${AnsiColor.BLUE}                   ######  ###### ###### ######   #   ######  ####  #    #
+
+${AnsiColor.BLUE}:: Beletech ${beletech.service.version} :: ${spring.application.name}:${AnsiColor.RED}${beletech.env}${AnsiColor.BLUE} :: Running SpringBoot ${spring-boot.version} :: ${AnsiColor.BRIGHT_BLACK}
