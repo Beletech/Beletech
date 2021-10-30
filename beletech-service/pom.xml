@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.beletech</groupId>
+        <artifactId>Beletech</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>beletech-service</artifactId>
+    <name>${project.artifactId}</name>
+    <version>1.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>Beletech 微服务集合</description>
+
+    <modules>
+        <module>beletech-desk</module>
+        <module>beletech-system</module>
+        <module>beletech-user</module>
+        <module>beletech-resource</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-starter-metrics</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-starter-api-crypto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-dict-api</artifactId>
+            <version>${beletech.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-scope-api</artifactId>
+            <version>${beletech.project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

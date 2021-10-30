@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>Beletech</artifactId>
+        <groupId>com.beletech</groupId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>beletech-service-api</artifactId>
+    <name>${project.artifactId}</name>
+    <version>1.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>Beletech 微服务API集合</description>
+
+    <modules>
+        <module>beletech-desk-api</module>
+        <module>beletech-dict-api</module>
+        <module>beletech-scope-api</module>
+        <module>beletech-system-api</module>
+        <module>beletech-user-api</module>
+        <module>beletech-resource-api</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-starter-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-starter-tenant</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-core-auto</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <finalName>${project.name}</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

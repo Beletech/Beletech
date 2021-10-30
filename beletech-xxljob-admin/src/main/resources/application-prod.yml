@@ -1,0 +1,7 @@
+#数据源配置
+spring:
+  datasource:
+    url: ${beletech.datasource.job.prod.url}
+    username: ${beletech.datasource.job.prod.username}
+    password: ${beletech.datasource.job.prod.password}
+
