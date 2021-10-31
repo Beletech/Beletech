@@ -17,10 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>com.beletech</groupId>
-            <artifactId>beletech-core-launch</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.beletech</groupId>
             <artifactId>beletech-starter-ribbon</artifactId>
         </dependency>
         <dependency>
