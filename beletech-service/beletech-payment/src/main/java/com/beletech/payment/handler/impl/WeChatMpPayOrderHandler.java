@@ -84,7 +84,7 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 		// 预订单参数
 		Map<String, String> params = UnifiedOrderModel.builder().appid(wxPayApiConfig.getAppId())
 				.mch_id(wxPayApiConfig.getMchId()).nonce_str(WxPayKit.generateStr()).body(goodsOrder.getGoodsName())
-				.attach(TenantContextHolder.getTenantId().toString()).out_trade_no(tradeOrder.getOrderId())
+				.attach("000000").out_trade_no(tradeOrder.getOrderId())
 				.total_fee(goodsOrder.getAmount()).spbill_create_ip(ip)
 				.notify_url(ChannelPayApiConfigKit.get().getNotifyUrl() + "/pay/notify/wx/callbak")
 				.trade_type(TradeType.JSAPI.getTradeType()).openid(goodsOrder.getUserId()).build()

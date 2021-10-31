@@ -9,11 +9,11 @@ spring:
           enabled: true
     loadbalancer:
       retry:
-        enabled: true
+        enabled: false
     nacos:
       discovery:
-        server-addr: http://127.0.0.1
+        server-addr: http://127.0.0.1:8848
         namespace: beletech
       config:
-        server-addr: http://127.0.0.1
+        server-addr: http://127.0.0.1:8848
         namespace: beletech

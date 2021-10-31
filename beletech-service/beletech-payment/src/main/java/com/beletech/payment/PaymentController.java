@@ -14,6 +14,6 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @SpringCloudApplication
 public class PaymentController {
 	public static void main(String[] args) {
-		BeletechApplication.run("paymentController", PaymentController.class, args);
+		BeletechApplication.run("beletech-payment", PaymentController.class, args);
 	}
 }

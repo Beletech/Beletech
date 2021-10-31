@@ -79,6 +79,6 @@ public class PayGoodsOrder extends Model<PayGoodsOrder> {
 	/**
 	 * 租户ID
 	 */
-	private Integer tenantId;
+	private String tenantId;
 
 }
