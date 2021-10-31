@@ -74,7 +74,7 @@
 				AND t.handle_code = 0
 			</if>
 		</trim>
-		ORDEResult BY t.trigger_time DESC
+		ORDER BY t.trigger_time DESC
 		LIMIT #{offset}, #{pagesize}
 	</select>
 
@@ -173,7 +173,7 @@
 		FROM xxl_job_log
 		WHERE trigger_time BETWEEN #{from} and #{to}
 		GROUP BY triggerDay
-		ORDEResult BY triggerDay
+		ORDER BY triggerDay
     </select>-->
 
     <select id="findLogReport" resultType="java.util.Map" >
@@ -209,7 +209,7 @@
 						AND t.job_id = #{jobId}
 					</if>
 				</trim>
-				ORDEResult BY t.trigger_time desc
+				ORDER BY t.trigger_time desc
 				LIMIT 0, #{clearBeforeNum}
 				) t1
 				)
@@ -235,7 +235,7 @@
 			(handle_code = 200)
 		)
 		AND `alarm_status` = 0
-		ORDEResult BY id ASC
+		ORDER BY id ASC
 		LIMIT #{pagesize}
 	</select>
 

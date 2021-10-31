@@ -95,7 +95,7 @@
                 and region.name like concat(concat('%', #{param2.name}),'%')
             </if>
         </where>
-        ORDEResult BY region.code
+        ORDER BY region.code
     </select>
 
     <select id="exportRegion" resultType="com.beletech.system.excel.RegionExcel">

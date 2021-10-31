@@ -48,7 +48,7 @@
 		SELECT <include refid="Base_Column_List" />
 		FROM xxl_job_log_report AS t
 		WHERE t.trigger_day between #{triggerDayFrom} and #{triggerDayTo}
-		ORDEResult BY t.trigger_day ASC
+		ORDER BY t.trigger_day ASC
 	</select>
 
 	<select id="queryLogReportTotal" resultMap="XxlJobLogReport">

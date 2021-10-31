@@ -10,3 +10,10 @@ spring:
     loadbalancer:
       retry:
         enabled: true
+    nacos:
+      discovery:
+        server-addr: http://127.0.0.1
+        namespace: beletech
+      config:
+        server-addr: http://127.0.0.1
+        namespace: beletech

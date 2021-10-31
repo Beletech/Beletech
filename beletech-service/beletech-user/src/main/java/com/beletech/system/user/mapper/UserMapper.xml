@@ -57,20 +57,31 @@
             </foreach>
             )
         </if>
-        ORDEResult BY id
+        ORDER BY id
     </select>
 
     <select id="getUser" resultMap="userResultMap">
-        SELECT
-            *
-        FROM
-            base_user
-        WHERE
-            tenant_id = #{param1} and account = #{param2} and is_deleted = 0
+        SELECT *
+        FROM base_user
+        WHERE tenant_id = #{param1}
+          and account = #{param2}
+          and is_deleted = 0
     </select>
 
     <select id="exportUser" resultType="com.beletech.system.user.excel.UserExcel">
-        SELECT id, tenant_id, user_type, account, name, real_name, email, phone, birthday, role_id, dept_id, post_id FROM base_user ${ew.customSqlSegment}
+        SELECT id,
+               tenant_id,
+               user_type,
+               account,
+               name,
+               real_name,
+               email,
+               phone,
+               birthday,
+               role_id,
+               dept_id,
+               post_id
+        FROM base_user ${ew.customSqlSegment}
     </select>
 
 </mapper>

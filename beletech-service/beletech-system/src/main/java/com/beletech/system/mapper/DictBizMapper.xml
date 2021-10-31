@@ -24,28 +24,33 @@
     </resultMap>
 
     <select id="getValue" resultType="java.lang.String">
-        select
-            dict_value
-        from base_dict_biz where code = #{param1} and dict_key = #{param2} and is_deleted = 0
+        select dict_value
+        from base_dict_biz
+        where code = #{param1}
+          and dict_key = #{param2}
+          and is_deleted = 0
     </select>
 
-    <!-- oracle 版本 -->
-    <!--<select id="getValue" resultType="java.lang.String">
-        select
-            dict_value
-        from base_dict_biz where code = #{param1, jdbcType=VARCHAR} and dict_key = #{param2} and dict_key >= 0  rownum 1
-    </select>-->
-
     <select id="getList" resultMap="dictResultMap">
-        select id, parent_id, code, dict_key, dict_value, sort, remark from base_dict_biz where code = #{param1} and parent_id > 0 and is_sealed = 0 and is_deleted = 0
+        select id, parent_id, code, dict_key, dict_value, sort, remark
+        from base_dict_biz
+        where code = #{param1}
+          and parent_id > 0
+          and is_sealed = 0
+          and is_deleted = 0
     </select>
 
     <select id="tree" resultMap="treeNodeResultMap">
-        select id, parent_id, dict_value as title, id as "value", id as "key" from base_dict_biz where is_deleted = 0
+        select id, parent_id, dict_value as title, id as "value", id as "key"
+        from base_dict_biz
+        where is_deleted = 0
     </select>
 
     <select id="parentTree" resultMap="treeNodeResultMap">
-        select id, parent_id, dict_value as title, id as "value", id as "key" from base_dict_biz where is_deleted = 0 and parent_id = 0
+        select id, parent_id, dict_value as title, id as "value", id as "key"
+        from base_dict_biz
+        where is_deleted = 0
+          and parent_id = 0
     </select>
 
 </mapper>
