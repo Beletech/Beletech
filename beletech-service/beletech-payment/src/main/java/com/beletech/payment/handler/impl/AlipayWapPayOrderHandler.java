@@ -99,7 +99,7 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 		try {
 			log.info("拉起支付宝wap 支付参数 {}", model);
 			AliPayApi.wapPay(response, model, ChannelPayApiConfigKit.get().getReturnUrl(),
-				ChannelPayApiConfigKit.get().getNotifyUrl() + "/pay/notify/ali/callbak");
+				ChannelPayApiConfigKit.get().getNotifyUrl() + "/beletech-payment/notify/ali/callbak");
 		} catch (AlipayApiException e) {
 			log.error("支付宝手机支付失败", e);
 			tradeOrder.setErrMsg(e.getErrMsg());

@@ -86,7 +86,7 @@ public class WeChatMpPayOrderHandler extends AbstractPayOrderHandler {
 				.mch_id(wxPayApiConfig.getMchId()).nonce_str(WxPayKit.generateStr()).body(goodsOrder.getGoodsName())
 				.attach("000000").out_trade_no(tradeOrder.getOrderId())
 				.total_fee(goodsOrder.getAmount()).spbill_create_ip(ip)
-				.notify_url(ChannelPayApiConfigKit.get().getNotifyUrl() + "/pay/notify/wx/callbak")
+				.notify_url(ChannelPayApiConfigKit.get().getNotifyUrl() + "/beletech-payment/notify/wx/callbak")
 				.trade_type(TradeType.JSAPI.getTradeType()).openid(goodsOrder.getUserId()).build()
 				.createSign(wxPayApiConfig.getPartnerKey(), SignType.HMACSHA256);
 

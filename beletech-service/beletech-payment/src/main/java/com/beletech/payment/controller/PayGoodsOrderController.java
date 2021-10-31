@@ -72,7 +72,7 @@ public class PayGoodsOrderController {
 			}
 			String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s"
 				+ "&redirect_uri=%s&response_type=code&scope=snsapi_base&state=%s";
-			String redirectUri = String.format("%s/api/beletech-payment/goods/wx?amount=%s&TENANT-ID=%s", channel.getNotifyUrl(),
+			String redirectUri = String.format("%s/beletech-payment/goods/wx?amount=%s&TENANT-ID=%s", channel.getNotifyUrl(),
 				goods.getAmount(), goods.getTenantId());
 			response.sendRedirect(
 				String.format(wxUrl, channel.getAppId(), URLUtil.encode(redirectUri), channel.getAppId()));
