@@ -21,7 +21,9 @@
         <module>beletech-desk</module>
         <module>beletech-system</module>
         <module>beletech-user</module>
+        <module>beletech-log</module>
         <module>beletech-resource</module>
+        <module>beletech-payment</module>
     </modules>
 
     <dependencies>
