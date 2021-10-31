@@ -61,26 +61,26 @@ public class RoleController extends BeletechController {
 	})
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "列表", notes = "传入role")
-	public Result<List<RoleVO>> list(@ApiIgnore @RequestParam Map<String, Object> role, BeletechUser bladeUser) {
+	public Result<List<RoleVO>> list(@ApiIgnore @RequestParam Map<String, Object> role, BeletechUser beletechUser) {
 		QueryWrapper<Role> queryWrapper = Condition.getQueryWrapper(role, Role.class);
-		List<Role> list = roleService.list((!bladeUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Role::getTenantId, bladeUser.getTenantId()) : queryWrapper);
+		List<Role> list = roleService.list((!beletechUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Role::getTenantId, beletechUser.getTenantId()) : queryWrapper);
 		return Result.data(RoleWrapper.build().listNodeVO(list));
 	}
 
 	@GetMapping("/tree")
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "树形结构", notes = "树形结构")
-	public Result<List<RoleVO>> tree(String tenantId, BeletechUser bladeUser) {
-		List<RoleVO> tree = roleService.tree(Func.toStrWithEmpty(tenantId, bladeUser.getTenantId()));
+	public Result<List<RoleVO>> tree(String tenantId, BeletechUser beletechUser) {
+		List<RoleVO> tree = roleService.tree(Func.toStrWithEmpty(tenantId, beletechUser.getTenantId()));
 		return Result.data(tree);
 	}
 
 	@GetMapping("/tree-by-id")
 	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "树形结构", notes = "树形结构")
-	public Result<List<RoleVO>> treeById(Long roleId, BeletechUser bladeUser) {
+	public Result<List<RoleVO>> treeById(Long roleId, BeletechUser beletechUser) {
 		Role role = SysCache.getRole(roleId);
-		List<RoleVO> tree = roleService.tree(Func.notNull(role) ? role.getTenantId() : bladeUser.getTenantId());
+		List<RoleVO> tree = roleService.tree(Func.notNull(role) ? role.getTenantId() : beletechUser.getTenantId());
 		return Result.data(tree);
 	}
 

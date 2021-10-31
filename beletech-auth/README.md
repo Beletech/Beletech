@@ -1,7 +1,7 @@
 ## 目前主要支持的oauth协议
 一、 授权码模式
 授权码模式(authorization_code)主要针对第三方应用，是最为复杂也最为安全的一种模式，操作步骤如下
-1. 访问地址：http://localhost:8100/oauth/authorize?client_id=blade&redirect_uri=http://example.com&code=233333&response_type=code
+1. 访问地址：http://localhost:8100/oauth/authorize?client_id=beletech&redirect_uri=http://example.com&code=233333&response_type=code
 2. 获取跳转后的code值(http://example.com/?code=VhYNLR)之后，调用 http://localhost/beletech-auth/oauth/token 传入对应的参数
 
 请求头：

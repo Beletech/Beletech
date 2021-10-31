@@ -1,10 +1,10 @@
 FROM beletech/alpine-java:openjdk8-openj9_cn_slim
 
-MAINTAINEResult bladejava@qq.com
+MAINTAINER betaxue@qq.com
 
-RUN mkdir -p /blade/swagger
+RUN mkdir -p /beletech/swagger
 
-WORKDIResult /blade/swagger
+WORKDIResult /beletech/swagger
 
 EXPOSE 18000
 

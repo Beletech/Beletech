@@ -33,11 +33,11 @@ public interface CacheNames {
 	/**
 	 * 验证码key
 	 */
-	String CAPTCHA_KEY = "blade:auth::blade:captcha:";
+	String CAPTCHA_KEY = "beletech:auth::beletech:captcha:";
 
 	/**
 	 * 登录失败key
 	 */
-	String USER_FAIL_KEY = "blade:user::blade:fail:";
+	String USER_FAIL_KEY = "beletech:user::beletech:fail:";
 
 }

@@ -78,9 +78,9 @@ public class UserController {
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "列表", notes = "传入account和realName")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	public Result<IPage<UserVO>> list(@ApiIgnore @RequestParam Map<String, Object> user, Query query, BeletechUser bladeUser) {
+	public Result<IPage<UserVO>> list(@ApiIgnore @RequestParam Map<String, Object> user, Query query, BeletechUser beletechUser) {
 		QueryWrapper<User> queryWrapper = Condition.getQueryWrapper(user, User.class);
-		IPage<User> pages = userService.page(Condition.getPage(query), (!bladeUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(User::getTenantId, bladeUser.getTenantId()) : queryWrapper);
+		IPage<User> pages = userService.page(Condition.getPage(query), (!beletechUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(User::getTenantId, beletechUser.getTenantId()) : queryWrapper);
 		return Result.data(UserWrapper.build().pageVO(pages));
 	}
 
@@ -92,8 +92,8 @@ public class UserController {
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "列表", notes = "传入account和realName")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	public Result<IPage<UserVO>> page(@ApiIgnore User user, Query query, Long deptId, BeletechUser bladeUser) {
-		IPage<User> pages = userService.selectUserPage(Condition.getPage(query), user, deptId, (bladeUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID) ? StringPool.EMPTY : bladeUser.getTenantId()));
+	public Result<IPage<UserVO>> page(@ApiIgnore User user, Query query, Long deptId, BeletechUser beletechUser) {
+		IPage<User> pages = userService.selectUserPage(Condition.getPage(query), user, deptId, (beletechUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID) ? StringPool.EMPTY : beletechUser.getTenantId()));
 		return Result.data(UserWrapper.build().pageVO(pages));
 	}
 
@@ -163,9 +163,9 @@ public class UserController {
 	@GetMapping("/user-list")
 	@ApiOperationSupport(order = 11)
 	@ApiOperation(value = "用户列表", notes = "传入user")
-	public Result<List<User>> userList(User user, BeletechUser bladeUser) {
+	public Result<List<User>> userList(User user, BeletechUser beletechUser) {
 		QueryWrapper<User> queryWrapper = Condition.getQueryWrapper(user);
-		List<User> list = userService.list((!AuthUtil.isAdministrator()) ? queryWrapper.lambda().eq(User::getTenantId, bladeUser.getTenantId()) : queryWrapper);
+		List<User> list = userService.list((!AuthUtil.isAdministrator()) ? queryWrapper.lambda().eq(User::getTenantId, beletechUser.getTenantId()) : queryWrapper);
 		return Result.data(list);
 	}
 
@@ -181,10 +181,10 @@ public class UserController {
 	@GetMapping("export-user")
 	@ApiOperationSupport(order = 13)
 	@ApiOperation(value = "导出用户", notes = "传入user")
-	public void exportUser(@ApiIgnore @RequestParam Map<String, Object> user, BeletechUser bladeUser, HttpServletResponse response) {
+	public void exportUser(@ApiIgnore @RequestParam Map<String, Object> user, BeletechUser beletechUser, HttpServletResponse response) {
 		QueryWrapper<User> queryWrapper = Condition.getQueryWrapper(user, User.class);
 		if (!AuthUtil.isAdministrator()) {
-			queryWrapper.lambda().eq(User::getTenantId, bladeUser.getTenantId());
+			queryWrapper.lambda().eq(User::getTenantId, beletechUser.getTenantId());
 		}
 		queryWrapper.lambda().eq(User::getIsDeleted, BeletechConstant.DB_NOT_DELETED);
 		List<UserExcel> list = userService.exportUser(queryWrapper);

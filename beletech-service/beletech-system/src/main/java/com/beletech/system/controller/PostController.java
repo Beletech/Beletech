@@ -99,8 +99,8 @@ public class PostController extends BeletechController {
 	@GetMapping("/select")
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "下拉数据源", notes = "传入post")
-	public Result<List<Post>> select(String tenantId, BeletechUser bladeUser) {
-		List<Post> list = postService.list(Wrappers.<Post>query().lambda().eq(Post::getTenantId, Func.toStrWithEmpty(tenantId, bladeUser.getTenantId())));
+	public Result<List<Post>> select(String tenantId, BeletechUser beletechUser) {
+		List<Post> list = postService.list(Wrappers.<Post>query().lambda().eq(Post::getTenantId, Func.toStrWithEmpty(tenantId, beletechUser.getTenantId())));
 		return Result.data(list);
 	}
 }

@@ -1,10 +1,10 @@
 FROM beletech/alpine-java:openjdk8-openj9_cn_slim
 
-MAINTAINEResult bladejava@qq.com
+MAINTAINER betaxue@qq.com
 
-RUN mkdir -p /blade/xxljob-admin
+RUN mkdir -p /betaxue/xxljob-admin
 
-WORKDIResult /blade/xxljob-admin
+WORKDIResult /betaxue/xxljob-admin
 
 EXPOSE 7009
 

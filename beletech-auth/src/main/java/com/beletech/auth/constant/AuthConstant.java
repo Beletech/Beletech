@@ -10,7 +10,7 @@ public interface AuthConstant {
 	/**
 	 * 密码加密规则
 	 */
-	String ENCRYPT = "{blade}";
+	String ENCRYPT = "{beletech}";
 
 	/**
 	 * base_client表字段

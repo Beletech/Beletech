@@ -27,7 +27,7 @@
         <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
         <docker.username>admin</docker.username>
         <docker.password>Harbor12345</docker.password>
-        <docker.namespace>blade</docker.namespace>
+        <docker.namespace>beletech</docker.namespace>
         <docker.plugin.version>1.4.13</docker.plugin.version>
     </properties>
 
