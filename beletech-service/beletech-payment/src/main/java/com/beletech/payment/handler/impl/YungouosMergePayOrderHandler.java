@@ -1,9 +1,11 @@
 package com.beletech.payment.handler.impl;
 
+import cn.hutool.core.math.MathUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.beletech.common.utils.TenantContextHolder;
+import com.beletech.core.secure.utils.AuthUtil;
 import com.beletech.payment.entity.PayChannel;
 import com.beletech.payment.entity.PayGoodsOrder;
 import com.beletech.payment.entity.PayTradeOrder;
@@ -13,6 +15,7 @@ import com.beletech.payment.mapper.PayTradeOrderMapper;
 import com.beletech.payment.utils.ChannelPayApiConfigKit;
 import com.beletech.payment.utils.OrderStatusEnum;
 import com.beletech.payment.utils.PayChannelNameEnum;
+import com.google.zxing.common.detector.MathUtils;
 import com.yungouos.pay.merge.MergePay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +55,10 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 	@Override
 	public PayTradeOrder createTradeOrder(PayGoodsOrder goodsOrder) {
 		PayTradeOrder tradeOrder = new PayTradeOrder();
-		tradeOrder.setOrderId(goodsOrder.getPayOrderId());
+		int random = MathUtils.round(5);
+		String s = new String(random + "");
+		goodsOrder.setPayOrderId(s);
+		tradeOrder.setOrderId(s);
 		tradeOrder.setAmount(goodsOrder.getAmount());
 		tradeOrder.setChannelId(PayChannelNameEnum.MERGE_PAY.getName());
 		tradeOrder.setChannelMchId(ChannelPayApiConfigKit.get().getChannelMchId());
@@ -69,9 +75,9 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 		PayChannel channel = ChannelPayApiConfigKit.get();
 
 		String money = NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString();
-
+		tradeOrder.setOrderId("100003");
 		return MergePay.nativePay(tradeOrder.getOrderId(), money, channel.getChannelMchId(), tradeOrder.getBody(), "1",
-			TenantContextHolder.getTenantId().toString(),
+			AuthUtil.getTenantId(),
 			ChannelPayApiConfigKit.get().getNotifyUrl() + "/beletech-payment/notify/merge/callbak",
 			ChannelPayApiConfigKit.get().getReturnUrl(), "", "", "", channel.getParam());
 	}

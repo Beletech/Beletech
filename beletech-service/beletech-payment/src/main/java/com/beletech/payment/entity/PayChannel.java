@@ -28,7 +28,7 @@ public class PayChannel extends Model<PayChannel> {
 	 * 渠道主键ID
 	 */
 	@TableId
-	private Integer id;
+	private Long id;
 
 	/**
 	 * 应用ID
@@ -94,6 +94,6 @@ public class PayChannel extends Model<PayChannel> {
 	/**
 	 * 租户ID
 	 */
-	private Integer tenantId;
+	private String tenantId;
 
 }
