@@ -28,6 +28,10 @@
             <groupId>com.beletech</groupId>
             <artifactId>beletech-starter-swagger</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.beletech</groupId>
+            <artifactId>beletech-starter-sequence</artifactId>
+        </dependency>
         <!-- 支付依赖-->
         <dependency>
             <groupId>com.github.javen205</groupId>

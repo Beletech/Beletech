@@ -15,10 +15,12 @@ import com.beletech.payment.mapper.PayTradeOrderMapper;
 import com.beletech.payment.utils.ChannelPayApiConfigKit;
 import com.beletech.payment.utils.OrderStatusEnum;
 import com.beletech.payment.utils.PayChannelNameEnum;
+import com.beletech.sequence.sequence.Sequence;
 import com.google.zxing.common.detector.MathUtils;
 import com.yungouos.pay.merge.MergePay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,8 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 	private final PayChannelMapper channelMapper;
 
 	private final HttpServletRequest request;
+
+	private final Sequence paySequence;
 
 	@Override
 	public PayChannel preparePayParams() {
@@ -75,7 +79,7 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 		PayChannel channel = ChannelPayApiConfigKit.get();
 
 		String money = NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString();
-		tradeOrder.setOrderId("100003");
+		tradeOrder.setOrderId(paySequence.nextNo());
 		return MergePay.nativePay(tradeOrder.getOrderId(), money, channel.getChannelMchId(), tradeOrder.getBody(), "1",
 			AuthUtil.getTenantId(),
 			ChannelPayApiConfigKit.get().getNotifyUrl() + "/beletech-payment/notify/merge/callbak",
