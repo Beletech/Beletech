@@ -6,13 +6,13 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.beletech.common.utils.TenantContextHolder;
-import com.beletech.payment.entity.PayGoodsOrder;
 import com.beletech.payment.entity.PayNotifyRecord;
 import com.beletech.payment.entity.PayTradeOrder;
+import com.beletech.payment.entity.PlatformSchemeOrder;
 import com.beletech.payment.handler.MessageDuplicateCheckerHandler;
-import com.beletech.payment.service.PayGoodsOrderService;
 import com.beletech.payment.service.PayNotifyRecordService;
 import com.beletech.payment.service.PayTradeOrderService;
+import com.beletech.payment.service.PlatformSchemeOrderService;
 import com.beletech.payment.utils.OrderStatusEnum;
 import com.beletech.payment.utils.PayConstants;
 import lombok.AllArgsConstructor;
@@ -39,11 +39,11 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 
 	private final PayTradeOrderService tradeOrderService;
 
-	private final PayGoodsOrderService goodsOrderService;
+	private final PlatformSchemeOrderService platformSchemeOrderService;
 
 	@Override
 	public void before(Map<String, String> params) {
-		Integer tenant = MapUtil.getInt(params, "attach");
+		String tenant = MapUtil.getStr(params, "attach");
 		TenantContextHolder.setTenantId(tenant);
 	}
 
@@ -67,20 +67,20 @@ public class YungouosMergePayNotifyCallbakHandler extends AbstractPayNotifyCallb
 	public String parse(Map<String, String> params) {
 		String mergeCode = params.get(PayConstants.MERGE_CODE);
 		String orderNo = params.get(PayConstants.MERGE_OUT_TRADE_NO);
-		PayGoodsOrder goodsOrder = goodsOrderService
-			.getOne(Wrappers.<PayGoodsOrder>lambdaQuery().eq(PayGoodsOrder::getPayOrderId, orderNo));
+		PlatformSchemeOrder platformSchemeOrder = platformSchemeOrderService
+			.getOne(Wrappers.<PlatformSchemeOrder>lambdaQuery().eq(PlatformSchemeOrder::getSerialNumber, orderNo));
 		PayTradeOrder tradeOrder = tradeOrderService
 			.getOne(Wrappers.<PayTradeOrder>lambdaQuery().eq(PayTradeOrder::getOrderId, orderNo));
 
 		if (OrderStatusEnum.SUCCESS.getStatus().equals(mergeCode)) {
-			goodsOrder.setStatus(OrderStatusEnum.SUCCESS.getStatus());
+			platformSchemeOrder.setStatus(OrderStatusEnum.SUCCESS.getStatus());
 			tradeOrder.setStatus(OrderStatusEnum.SUCCESS.getStatus());
 		} else {
-			goodsOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
+			platformSchemeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
 			tradeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
 		}
 
-		goodsOrderService.updateById(goodsOrder);
+		platformSchemeOrderService.updateById(platformSchemeOrder);
 
 		String succTime = MapUtil.getStr(params, "time");
 		tradeOrder.setPaySuccTime(DateUtil.parse(succTime, DatePattern.NORM_DATETIME_FORMAT).getTime());

@@ -1,10 +1,10 @@
 package com.beletech.payment.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.beletech.payment.entity.PayGoodsOrder;
-import com.beletech.payment.handler.PayOrderHandler;
-import com.beletech.payment.mapper.PayGoodsOrderMapper;
-import com.beletech.payment.service.PayGoodsOrderService;
+import com.beletech.payment.entity.PlatformSchemeOrder;
+import com.beletech.payment.handler.PlatformSchemeHandler;
+import com.beletech.payment.mapper.PlatformSchemeOrderMapper;
+import com.beletech.payment.service.PlatformSchemeOrderService;
 import com.beletech.payment.utils.PayChannelNameEnum;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 商品
+ * 支付方案
  *
  * @author XueBing
  * @date 2021-10-31
@@ -25,26 +25,24 @@ import java.util.Map;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class PayGoodsOrderServiceImpl extends ServiceImpl<PayGoodsOrderMapper, PayGoodsOrder>
-	implements PayGoodsOrderService {
+public class PlatformSchemeOrderServiceImpl extends ServiceImpl<PlatformSchemeOrderMapper, PlatformSchemeOrder>
+	implements PlatformSchemeOrderService {
 
-	private final Map<String, PayOrderHandler> orderHandlerMap;
+	private final Map<String, PlatformSchemeHandler> platformSchemeHandlerMap;
 
 	private final HttpServletRequest request;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Map<String, Object> buy(PayGoodsOrder goodsOrder, boolean isMerge) {
+	public Map<String, Object> buy(PlatformSchemeOrder platformSchemeOrder, boolean isMerge) {
 		// 是否聚合支付
 		String ua = isMerge ? "MERGE_PAY" : request.getHeader(HttpHeaders.USER_AGENT);
 		PayChannelNameEnum channel = PayChannelNameEnum.getChannel(ua);
-		PayOrderHandler orderHandler = orderHandlerMap.get(channel.name());
-		goodsOrder.setGoodsName("测试产品");
-		goodsOrder.setGoodsId("10001");
-		Object params = orderHandler.handle(goodsOrder);
+		PlatformSchemeHandler orderHandler = platformSchemeHandlerMap.get(channel.name());
+		Object params = orderHandler.handle(platformSchemeOrder);
 		Map<String, Object> result = new HashMap<>(4);
 		result.put("channel", channel.name());
-		result.put("goods", goodsOrder);
+		result.put("platformScheme", platformSchemeOrder);
 		result.put("params", params);
 		return result;
 	}

@@ -49,6 +49,6 @@ public enum TradeStatusEnum {
 	/**
 	 * 描述
 	 */
-	private String status;
+	private Integer status;
 
 }

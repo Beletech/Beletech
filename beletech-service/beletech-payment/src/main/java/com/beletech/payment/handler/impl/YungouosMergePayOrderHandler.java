@@ -1,29 +1,25 @@
 package com.beletech.payment.handler.impl;
 
-import cn.hutool.core.math.MathUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.beletech.common.utils.TenantContextHolder;
 import com.beletech.core.secure.utils.AuthUtil;
 import com.beletech.payment.entity.PayChannel;
-import com.beletech.payment.entity.PayGoodsOrder;
 import com.beletech.payment.entity.PayTradeOrder;
+import com.beletech.payment.entity.PlatformSchemeOrder;
 import com.beletech.payment.mapper.PayChannelMapper;
-import com.beletech.payment.mapper.PayGoodsOrderMapper;
 import com.beletech.payment.mapper.PayTradeOrderMapper;
+import com.beletech.payment.mapper.PlatformSchemeOrderMapper;
 import com.beletech.payment.utils.ChannelPayApiConfigKit;
 import com.beletech.payment.utils.OrderStatusEnum;
 import com.beletech.payment.utils.PayChannelNameEnum;
 import com.beletech.sequence.sequence.Sequence;
-import com.google.zxing.common.detector.MathUtils;
 import com.yungouos.pay.merge.MergePay;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 /**
  * @author XueBing
@@ -38,7 +34,7 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 
 	private final PayTradeOrderMapper tradeOrderMapper;
 
-	private final PayGoodsOrderMapper goodsOrderMapper;
+	private final PlatformSchemeOrderMapper platformSchemeOrderMapper;
 
 	private final PayChannelMapper channelMapper;
 
@@ -57,28 +53,26 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 	}
 
 	@Override
-	public PayTradeOrder createTradeOrder(PayGoodsOrder goodsOrder) {
+	public PayTradeOrder createTradeOrder(PlatformSchemeOrder platformSchemeOrder) {
 		PayTradeOrder tradeOrder = new PayTradeOrder();
-		int random = MathUtils.round(5);
-		String s = new String(random + "");
-		goodsOrder.setPayOrderId(s);
-		tradeOrder.setOrderId(s);
-		tradeOrder.setAmount(goodsOrder.getAmount());
+		String serialNumber = paySequence.nextNo();
+		platformSchemeOrder.setSerialNumber(serialNumber);
+		tradeOrder.setOrderId(serialNumber);
+		tradeOrder.setAmount(platformSchemeOrder.getAmount());
 		tradeOrder.setChannelId(PayChannelNameEnum.MERGE_PAY.getName());
 		tradeOrder.setChannelMchId(ChannelPayApiConfigKit.get().getChannelMchId());
 		tradeOrder.setClientIp(ServletUtil.getClientIP(request));
 		tradeOrder.setCurrency("CNY");
 		tradeOrder.setStatus(OrderStatusEnum.INIT.getStatus());
-		tradeOrder.setBody(goodsOrder.getGoodsName());
+		tradeOrder.setBody(platformSchemeOrder.getPlatformName());
 		tradeOrderMapper.insert(tradeOrder);
 		return tradeOrder;
 	}
 
 	@Override
-	public Object pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
+	public Object pay(PlatformSchemeOrder platformSchemeOrder, PayTradeOrder tradeOrder) {
 		PayChannel channel = ChannelPayApiConfigKit.get();
-
-		String money = NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString();
+		String money = platformSchemeOrder.getAmount().divide(new BigDecimal(100)).setScale(2).toString();
 		tradeOrder.setOrderId(paySequence.nextNo());
 		return MergePay.nativePay(tradeOrder.getOrderId(), money, channel.getChannelMchId(), tradeOrder.getBody(), "1",
 			AuthUtil.getTenantId(),
@@ -87,8 +81,8 @@ public class YungouosMergePayOrderHandler extends AbstractPayOrderHandler {
 	}
 
 	@Override
-	public void updateOrder(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
+	public void updateOrder(PlatformSchemeOrder platformSchemeOrder, PayTradeOrder tradeOrder) {
 		tradeOrderMapper.updateById(tradeOrder);
-		goodsOrderMapper.updateById(goodsOrder);
+		platformSchemeOrderMapper.updateById(platformSchemeOrder);
 	}
 }

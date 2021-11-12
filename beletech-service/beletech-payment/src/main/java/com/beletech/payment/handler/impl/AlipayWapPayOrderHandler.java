@@ -1,7 +1,6 @@
 package com.beletech.payment.handler.impl;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -10,11 +9,11 @@ import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.beletech.common.utils.TenantContextHolder;
 import com.beletech.payment.entity.PayChannel;
-import com.beletech.payment.entity.PayGoodsOrder;
 import com.beletech.payment.entity.PayTradeOrder;
+import com.beletech.payment.entity.PlatformSchemeOrder;
 import com.beletech.payment.mapper.PayChannelMapper;
-import com.beletech.payment.mapper.PayGoodsOrderMapper;
 import com.beletech.payment.mapper.PayTradeOrderMapper;
+import com.beletech.payment.mapper.PlatformSchemeOrderMapper;
 import com.beletech.payment.utils.ChannelPayApiConfigKit;
 import com.beletech.payment.utils.OrderStatusEnum;
 import com.beletech.payment.utils.PayChannelNameEnum;
@@ -28,6 +27,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * @author XueBing
@@ -42,7 +42,7 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 
 	private PayTradeOrderMapper tradeOrderMapper;
 
-	private PayGoodsOrderMapper goodsOrderMapper;
+	private PlatformSchemeOrderMapper platformSchemeOrderMapper;
 
 	private PayChannelMapper channelMapper;
 
@@ -69,32 +69,32 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 	}
 
 	@Override
-	public PayTradeOrder createTradeOrder(PayGoodsOrder goodsOrder) {
+	public PayTradeOrder createTradeOrder(PlatformSchemeOrder platformSchemeOrder) {
 		PayTradeOrder tradeOrder = new PayTradeOrder();
-		tradeOrder.setOrderId(goodsOrder.getPayOrderId());
-		tradeOrder.setAmount(goodsOrder.getAmount());
+		tradeOrder.setOrderId(platformSchemeOrder.getSerialNumber());
+		tradeOrder.setAmount(platformSchemeOrder.getAmount());
 		tradeOrder.setChannelId(PayChannelNameEnum.ALIPAY_WAP.getName());
 		tradeOrder.setChannelMchId(AliPayApiConfigKit.getAliPayApiConfig().getAppId());
 		tradeOrder.setClientIp(ServletUtil.getClientIP(request));
 		tradeOrder.setCurrency("cny");
 		tradeOrder.setExpireTime(30L);
 		tradeOrder.setStatus(OrderStatusEnum.INIT.getStatus());
-		tradeOrder.setBody(goodsOrder.getGoodsName());
+		tradeOrder.setBody(platformSchemeOrder.getPlatformName());
 		tradeOrderMapper.insert(tradeOrder);
 		return tradeOrder;
 	}
 
 	@Override
-	public PayTradeOrder pay(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
+	public PayTradeOrder pay(PlatformSchemeOrder platformSchemeOrder, PayTradeOrder tradeOrder) {
 		AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
 		model.setBody(tradeOrder.getBody());
 		model.setSubject(tradeOrder.getBody());
 		model.setOutTradeNo(tradeOrder.getOrderId());
 		model.setTimeoutExpress("30m");
-
 		// 分转成元 并且保留两位
-		model.setTotalAmount(NumberUtil.div(tradeOrder.getAmount(), "100", 2).toString());
-		model.setProductCode(goodsOrder.getGoodsId());
+		BigDecimal totalAmount = tradeOrder.getAmount().divide(new BigDecimal(100)).setScale(2);
+		model.setTotalAmount(totalAmount.toString());
+		model.setProductCode(platformSchemeOrder.getPlatformId().toString());
 		model.setPassbackParams(String.valueOf(TenantContextHolder.getTenantId()));
 		try {
 			log.info("拉起支付宝wap 支付参数 {}", model);
@@ -105,19 +105,19 @@ public class AlipayWapPayOrderHandler extends AbstractPayOrderHandler {
 			tradeOrder.setErrMsg(e.getErrMsg());
 			tradeOrder.setErrCode(e.getErrCode());
 			tradeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
-			goodsOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
+			platformSchemeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
 		} catch (IOException e) {
 			log.error("支付宝手机支付失败", e);
 			tradeOrder.setErrMsg(e.getMessage());
 			tradeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
-			goodsOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
+			platformSchemeOrder.setStatus(OrderStatusEnum.FAIL.getStatus());
 		}
 		return tradeOrder;
 	}
 
 	@Override
-	public void updateOrder(PayGoodsOrder goodsOrder, PayTradeOrder tradeOrder) {
+	public void updateOrder(PlatformSchemeOrder platformSchemeOrder, PayTradeOrder tradeOrder) {
 		tradeOrderMapper.updateById(tradeOrder);
-		goodsOrderMapper.updateById(goodsOrder);
+		platformSchemeOrderMapper.updateById(platformSchemeOrder);
 	}
 }

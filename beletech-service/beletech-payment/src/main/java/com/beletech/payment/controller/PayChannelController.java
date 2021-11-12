@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/pay-channel")
-@Api(value = "pay-channel", tags = "pay-channel管理")
+@Api(value = "收费渠道", tags = "收费渠道管理")
 public class PayChannelController {
 
 	private final PayChannelService payChannelService;

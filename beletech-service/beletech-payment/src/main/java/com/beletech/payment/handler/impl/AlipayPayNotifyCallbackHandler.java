@@ -5,13 +5,13 @@ import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.beletech.common.utils.TenantContextHolder;
-import com.beletech.payment.entity.PayGoodsOrder;
 import com.beletech.payment.entity.PayNotifyRecord;
 import com.beletech.payment.entity.PayTradeOrder;
+import com.beletech.payment.entity.PlatformSchemeOrder;
 import com.beletech.payment.handler.MessageDuplicateCheckerHandler;
-import com.beletech.payment.service.PayGoodsOrderService;
 import com.beletech.payment.service.PayNotifyRecordService;
 import com.beletech.payment.service.PayTradeOrderService;
+import com.beletech.payment.service.PlatformSchemeOrderService;
 import com.beletech.payment.utils.PayConstants;
 import com.beletech.payment.utils.TradeStatusEnum;
 import lombok.AllArgsConstructor;
@@ -36,13 +36,13 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 
 	private final PayTradeOrderService tradeOrderService;
 
-	private final PayGoodsOrderService goodsOrderService;
+	private final PlatformSchemeOrderService platformSchemeOrderService;
 
 	private final PayNotifyRecordService recordService;
 
 	@Override
 	public void before(Map<String, String> params) {
-		Integer tenant = MapUtil.getInt(params, "passback_params");
+		String tenant = MapUtil.getStr(params, "passback_params");
 		TenantContextHolder.setTenantId(tenant);
 	}
 
@@ -69,13 +69,13 @@ public class AlipayPayNotifyCallbackHandler extends AbstractPayNotifyCallbakHand
 
 	@Override
 	public String parse(Map<String, String> params) {
-		String tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get(PayConstants.TRADE_STATUS))
+		Integer tradeStatus = EnumUtil.fromString(TradeStatusEnum.class, params.get(PayConstants.TRADE_STATUS))
 			.getStatus();
 		String orderNo = params.get(PayConstants.OUT_TRADE_NO);
-		PayGoodsOrder goodsOrder = goodsOrderService
-			.getOne(Wrappers.<PayGoodsOrder>lambdaQuery().eq(PayGoodsOrder::getPayOrderId, orderNo));
+		PlatformSchemeOrder goodsOrder = platformSchemeOrderService
+			.getOne(Wrappers.<PlatformSchemeOrder>lambdaQuery().eq(PlatformSchemeOrder::getSerialNumber, orderNo));
 		goodsOrder.setStatus(tradeStatus);
-		goodsOrderService.updateById(goodsOrder);
+		platformSchemeOrderService.updateById(goodsOrder);
 		PayTradeOrder tradeOrder = tradeOrderService
 			.getOne(Wrappers.<PayTradeOrder>lambdaQuery().eq(PayTradeOrder::getOrderId, orderNo));
 		Long succTime = MapUtil.getLong(params, "time_end");

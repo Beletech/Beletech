@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -39,7 +40,7 @@ public class PayTradeOrder extends Model<PayTradeOrder> {
 	/**
 	 * 支付金额,单位元
 	 */
-	private String amount;
+	private BigDecimal amount;
 
 	/**
 	 * 三位货币代码,人民币:cny
@@ -49,7 +50,7 @@ public class PayTradeOrder extends Model<PayTradeOrder> {
 	/**
 	 * 支付状态,0-订单生成,1-支付中(目前未使用),2-支付成功,3-业务处理完成
 	 */
-	private String status;
+	private Integer status;
 
 	/**
 	 * 客户端IP
