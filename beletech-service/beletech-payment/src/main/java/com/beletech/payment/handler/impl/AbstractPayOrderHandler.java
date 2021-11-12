@@ -22,6 +22,8 @@ public abstract class AbstractPayOrderHandler implements PlatformSchemeHandler {
 	@Override
 	public void createPlatformSchemeOrder(PlatformSchemeOrder platformSchemeOrder) {
 		platformSchemeOrder.setStatus(OrderStatusEnum.INIT.getStatus());
+		platformSchemeOrder.setPlatformName("平台费用");
+		platformSchemeOrder.setPlatformId(1L);
 		platformSchemeOrderMapper.insert(platformSchemeOrder);
 	}
 

@@ -16,9 +16,7 @@ public class AuthProvider {
 	private static final List<String> DEFAULT_SKIP_URL = new ArrayList<>();
 
 	static {
-		DEFAULT_SKIP_URL.add("/example");
-		DEFAULT_SKIP_URL.add("/goods/**");
-		DEFAULT_SKIP_URL.add("/test/**");
+		DEFAULT_SKIP_URL.add("/platform-scheme-order/**");
 		DEFAULT_SKIP_URL.add("/oauth/token/**");
 		DEFAULT_SKIP_URL.add("/oauth/captcha/**");
 		DEFAULT_SKIP_URL.add("/oauth/clear-cache/**");
