@@ -22,6 +22,7 @@
         <module>beletech-system-api</module>
         <module>beletech-user-api</module>
         <module>beletech-resource-api</module>
+        <module>beletech-payment-api</module>
     </modules>
 
     <dependencies>

@@ -30,7 +30,7 @@
 				AND t.role = #{role}
 			</if>
 		</trim>
-		ORDEResult BY username ASC
+		ORDER BY username ASC
 		LIMIT #{offset}, #{pagesize}
 	</select>
 

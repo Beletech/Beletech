@@ -87,14 +87,14 @@ public class SocialTokenGranter extends AbstractTokenGranter {
 
 		// 远程调用，获取认证信息
 		Result<UserInfo> result = userClient.userAuthInfo(userOauth);
-		BeletechUserDetails bladeUserDetails;
+		BeletechUserDetails beletechUserDetails;
 		if (result.isSuccess()) {
 			User user = result.getData().getUser();
 			Kv detail = result.getData().getDetail();
 			if (user == null) {
 				throw new InvalidGrantException("social grant failure, user is null");
 			}
-			bladeUserDetails = new BeletechUserDetails(user.getId(),
+			beletechUserDetails = new BeletechUserDetails(user.getId(),
 				tenantId, result.getData().getOauthId(), user.getName(), user.getRealName(), user.getDeptId(), user.getPostId(), user.getRoleId(), Func.join(result.getData().getRoles()), Func.toStr(userOauth.getAvatar(), TokenUtil.DEFAULT_AVATAR),
 				userOauth.getUsername(), AuthConstant.ENCRYPT + user.getPassword(), detail, true, true, true, true,
 				AuthorityUtils.commaSeparatedStringToAuthorityList(Func.join(result.getData().getRoles())));
@@ -103,7 +103,7 @@ public class SocialTokenGranter extends AbstractTokenGranter {
 		}
 
 		// 组装认证数据，关闭密码校验
-		Authentication userAuth = new UsernamePasswordAuthenticationToken(bladeUserDetails, null, bladeUserDetails.getAuthorities());
+		Authentication userAuth = new UsernamePasswordAuthenticationToken(beletechUserDetails, null, beletechUserDetails.getAuthorities());
 		((AbstractAuthenticationToken) userAuth).setDetails(parameters);
 		OAuth2Request storedOAuth2Request = getRequestFactory().createOAuth2Request(client, tokenRequest);
 

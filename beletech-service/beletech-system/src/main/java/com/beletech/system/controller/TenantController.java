@@ -64,9 +64,9 @@ public class TenantController extends BeletechController {
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "分页", notes = "传入tenant")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	public Result<IPage<Tenant>> list(@ApiIgnore @RequestParam Map<String, Object> tenant, Query query, BeletechUser bladeUser) {
+	public Result<IPage<Tenant>> list(@ApiIgnore @RequestParam Map<String, Object> tenant, Query query, BeletechUser beletechUser) {
 		QueryWrapper<Tenant> queryWrapper = Condition.getQueryWrapper(tenant, Tenant.class);
-		IPage<Tenant> pages = tenantService.page(Condition.getPage(query), (!bladeUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Tenant::getTenantId, bladeUser.getTenantId()) : queryWrapper);
+		IPage<Tenant> pages = tenantService.page(Condition.getPage(query), (!beletechUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Tenant::getTenantId, beletechUser.getTenantId()) : queryWrapper);
 		return Result.data(pages);
 	}
 
@@ -74,9 +74,9 @@ public class TenantController extends BeletechController {
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "下拉数据源", notes = "传入tenant")
 	@PreAuth(RoleConstant.HAS_ROLE_ADMIN)
-	public Result<List<Tenant>> select(Tenant tenant, BeletechUser bladeUser) {
+	public Result<List<Tenant>> select(Tenant tenant, BeletechUser beletechUser) {
 		QueryWrapper<Tenant> queryWrapper = Condition.getQueryWrapper(tenant);
-		List<Tenant> list = tenantService.list((!bladeUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Tenant::getTenantId, bladeUser.getTenantId()) : queryWrapper);
+		List<Tenant> list = tenantService.list((!beletechUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Tenant::getTenantId, beletechUser.getTenantId()) : queryWrapper);
 		return Result.data(list);
 	}
 

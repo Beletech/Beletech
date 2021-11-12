@@ -48,7 +48,7 @@
 		SELECT <include refid="Base_Column_List" />
 		FROM xxl_job_logglue AS t
 		WHERE t.job_id = #{jobId}
-		ORDEResult BY id DESC
+		ORDER BY id DESC
 	</select>
 
 	<delete id="removeOld" >
@@ -57,7 +57,7 @@
 			SELECT id FROM(
 				SELECT id FROM xxl_job_logglue
 				WHERE `job_id` = #{jobId}
-				ORDEResult BY update_time desc
+				ORDER BY update_time desc
 				LIMIT 0, #{limit}
 			) t1
 		) AND `job_id` = #{jobId}

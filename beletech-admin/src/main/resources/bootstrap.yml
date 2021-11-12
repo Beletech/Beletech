@@ -22,13 +22,13 @@ spring:
         title: Beletech Monitor
         external-views:
           - label: 架构官网
-            url: https://beletech.vip/
+            url: https://beletech.com/
             order: 1
             iframe: true
   security:
     user:
-      name: blade
-      password: blade
+      name: admin
+      password: admin
 
 # 监控的相关配置
 monitor:

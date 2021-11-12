@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://127.0.0.1:8848
+        namespace: beletech
+      #        register-enabled: false
+      config:
+        server-addr: http://127.0.0.1:8848
+        namespace: beletech

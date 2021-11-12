@@ -62,9 +62,9 @@ public class DeptController extends BeletechController {
 	})
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "列表", notes = "传入dept")
-	public Result<List<DeptVO>> list(@ApiIgnore @RequestParam Map<String, Object> dept, BeletechUser bladeUser) {
+	public Result<List<DeptVO>> list(@ApiIgnore @RequestParam Map<String, Object> dept, BeletechUser beletechUser) {
 		QueryWrapper<Dept> queryWrapper = Condition.getQueryWrapper(dept, Dept.class);
-		List<Dept> list = deptService.list((!bladeUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Dept::getTenantId, bladeUser.getTenantId()) : queryWrapper);
+		List<Dept> list = deptService.list((!beletechUser.getTenantId().equals(BeletechConstant.ADMIN_TENANT_ID)) ? queryWrapper.lambda().eq(Dept::getTenantId, beletechUser.getTenantId()) : queryWrapper);
 		return Result.data(DeptWrapper.build().listNodeVO(list));
 	}
 
@@ -75,24 +75,24 @@ public class DeptController extends BeletechController {
 	})
 	@ApiOperationSupport(order = 3)
 	@ApiOperation(value = "懒加载列表", notes = "传入dept")
-	public Result<List<DeptVO>> lazyList(@ApiIgnore @RequestParam Map<String, Object> dept, Long parentId, BeletechUser bladeUser) {
-		List<DeptVO> list = deptService.lazyList(bladeUser.getTenantId(), parentId, dept);
+	public Result<List<DeptVO>> lazyList(@ApiIgnore @RequestParam Map<String, Object> dept, Long parentId, BeletechUser beletechUser) {
+		List<DeptVO> list = deptService.lazyList(beletechUser.getTenantId(), parentId, dept);
 		return Result.data(DeptWrapper.build().listNodeLazyVO(list));
 	}
 
 	@GetMapping("/tree")
 	@ApiOperationSupport(order = 4)
 	@ApiOperation(value = "树形结构", notes = "树形结构")
-	public Result<List<DeptVO>> tree(String tenantId, BeletechUser bladeUser) {
-		List<DeptVO> tree = deptService.tree(Func.toStrWithEmpty(tenantId, bladeUser.getTenantId()));
+	public Result<List<DeptVO>> tree(String tenantId, BeletechUser beletechUser) {
+		List<DeptVO> tree = deptService.tree(Func.toStrWithEmpty(tenantId, beletechUser.getTenantId()));
 		return Result.data(tree);
 	}
 
 	@GetMapping("/lazy-tree")
 	@ApiOperationSupport(order = 5)
 	@ApiOperation(value = "懒加载树形结构", notes = "树形结构")
-	public Result<List<DeptVO>> lazyTree(String tenantId, Long parentId, BeletechUser bladeUser) {
-		List<DeptVO> tree = deptService.lazyTree(Func.toStrWithEmpty(tenantId, bladeUser.getTenantId()), parentId);
+	public Result<List<DeptVO>> lazyTree(String tenantId, Long parentId, BeletechUser beletechUser) {
+		List<DeptVO> tree = deptService.lazyTree(Func.toStrWithEmpty(tenantId, beletechUser.getTenantId()), parentId);
 		return Result.data(tree);
 	}
 

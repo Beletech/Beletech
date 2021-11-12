@@ -24,7 +24,7 @@ public class BeletechPasswordEncoderFactories {
 	 * updates should not impact users. The mappings current are:
 	 *
 	 * <ul>
-	 * <li>blade - {@link BeletechPasswordEncoder} (sha1(md5("password")))</li>
+	 * <li>beletech - {@link BeletechPasswordEncoder} (sha1(md5("password")))</li>
 	 * <li>bcrypt - {@link BCryptPasswordEncoder} (Also used for encoding)</li>
 	 * <li>noop - {@link BeletechNoOpPasswordEncoder}</li>
 	 * <li>pbkdf2 - {@link Pbkdf2PasswordEncoder}</li>
@@ -34,7 +34,7 @@ public class BeletechPasswordEncoderFactories {
 	 * @return the {@link PasswordEncoder} to use
 	 */
 	public static PasswordEncoder createDelegatingPasswordEncoder() {
-		String encodingId = "blade";
+		String encodingId = "beletech";
 		Map<String, PasswordEncoder> encoders = new HashMap<>(16);
 		encoders.put(encodingId, new BeletechPasswordEncoder());
 		encoders.put("bcrypt", new BCryptPasswordEncoder());
