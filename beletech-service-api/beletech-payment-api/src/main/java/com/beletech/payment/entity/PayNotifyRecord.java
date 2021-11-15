@@ -1,7 +1,6 @@
 package com.beletech.payment.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.beletech.core.tenant.mp.TenantEntity;
 import io.swagger.annotations.ApiModel;

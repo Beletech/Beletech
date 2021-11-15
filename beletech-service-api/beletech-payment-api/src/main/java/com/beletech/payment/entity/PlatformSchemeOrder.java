@@ -25,6 +25,9 @@ public class PlatformSchemeOrder extends BaseEntity {
 	@ApiModelProperty("方案id")
 	private Long platformId;
 
+	@ApiModelProperty("数量")
+	private Integer number;
+
 	@ApiModelProperty("方案名称")
 	private String platformName;
 
