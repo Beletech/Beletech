@@ -4,7 +4,7 @@ spring:
       discovery:
         server-addr: http://8.140.106.81:8848
         namespace: beletech
-        ip: 192.168.191.200
+#        ip: 192.168.191.200
       #        register-enabled: false
       config:
         server-addr: http://8.140.106.81:8848

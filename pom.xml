@@ -48,7 +48,7 @@
             <dependency>
                 <groupId>com.beletech</groupId>
                 <artifactId>beletech-bom</artifactId>
-                <version>1.0.1.RELEASE</version>
+                <version>1.0.2.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

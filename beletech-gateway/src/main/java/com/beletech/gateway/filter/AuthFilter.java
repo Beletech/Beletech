@@ -26,7 +26,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
+import static com.beletech.core.jwt.JwtUtil.ACCESS_TOKEN;
 /**
  * 鉴权认证
  *
@@ -66,8 +68,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
 		if (jwtProperties.getState()) {
 			String tenantId = String.valueOf(claims.get(TokenConstant.TENANT_ID));
 			String userId = String.valueOf(claims.get(TokenConstant.USER_ID));
-			String accessToken = JwtUtil.getAccessToken(tenantId, userId, token);
-			if (!token.equalsIgnoreCase(accessToken)) {
+			Map<String, Object> tokenInfos = JwtUtil.getAccessToken(tenantId, userId, token);
+			if (null == tokenInfos || !tokenInfos.containsKey(ACCESS_TOKEN) || !token.equalsIgnoreCase(String.valueOf(tokenInfos.get(ACCESS_TOKEN)))) {
 				return unAuth(resp, "令牌已失效");
 			}
 		}

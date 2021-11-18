@@ -1,5 +1,6 @@
 package com.beletech.auth.support;
 
+import com.beletech.core.launch.constant.TokenConstant;
 import lombok.AllArgsConstructor;
 import com.beletech.auth.service.BeletechUserDetails;
 import com.beletech.auth.utils.TokenUtil;
@@ -47,17 +48,26 @@ public class BeletechJwtTokenEnhancer implements TokenEnhancer {
 		info.put(TokenUtil.AVATAR, principal.getAvatar());
 		info.put(TokenUtil.DETAIL, principal.getDetail());
 		info.put(TokenUtil.LICENSE, TokenUtil.LICENSE_NAME);
+
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
 
 		//token状态设置
 		if (jwtProperties.getState()) {
 			OAuth2AccessToken oAuth2AccessToken = jwtAccessTokenConverter.enhance(accessToken, authentication);
-			String tokenValue = oAuth2AccessToken.getValue();
-			String tenantId = principal.getTenantId();
-			String userId = Func.toStr(principal.getUserId());
-			JwtUtil.addAccessToken(tenantId, userId, tokenValue, accessToken.getExpiresIn());
+			saveTokenInfos(accessToken, principal, oAuth2AccessToken.getValue());
 		}
 
 		return accessToken;
+	}
+
+	private void saveTokenInfos(OAuth2AccessToken accessToken, BeletechUserDetails principal, String tokenValue) {
+		String tenantId = principal.getTenantId();
+		String userId = Func.toStr(principal.getUserId());
+		Map<String,Object> tokenInfos = new HashMap(20);
+		tokenInfos.put(TokenUtil.AVATAR, principal.getAvatar());
+		tokenInfos.put(TokenUtil.DETAIL, principal.getDetail());
+		tokenInfos.put(TokenConstant.ACCESS_TOKEN, tokenValue);
+		tokenInfos.put(TokenConstant.EXPIRES_IN, accessToken.getExpiresIn());
+		JwtUtil.addAccessToken(tenantId, userId, tokenInfos, accessToken.getExpiresIn());
 	}
 }
